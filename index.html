@@ -369,10 +369,109 @@
         button, a {
             cursor: pointer;
         }
+
+        /* 遮罩层样式 (语言切换动画) */
+        .lang-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+        }
+        .lang-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .lang-overlay .spinner {
+            background: rgba(255, 245, 250, 0.9);
+            backdrop-filter: blur(8px);
+            border-radius: 3rem;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #c45b8c;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid #ffb7d2;
+        }
+        .lang-overlay .spinner i {
+            font-size: 1.5rem;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 居中弹窗 (复制提示) */
+        .center-toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 245, 250, 0.96);
+            backdrop-filter: blur(20px);
+            border-radius: 2rem;
+            padding: 1.2rem 2.2rem;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2), 0 0 0 1px #ffb7d2;
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #b34b73;
+            text-align: center;
+            white-space: nowrap;
+            animation: fadeInUp 0.2s ease;
+            border: 2px solid #ff99bb;
+        }
+        .center-toast i {
+            font-size: 1.8rem;
+            color: #ff80a5;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+        @media (max-width: 560px) {
+            .center-toast {
+                white-space: normal;
+                font-size: 1rem;
+                padding: 1rem 1.5rem;
+                max-width: 85vw;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
 <div class="bg-cute"></div>
+
+<!-- 语言切换遮罩层 -->
+<div id="langOverlay" class="lang-overlay">
+    <div class="spinner">
+        <i class="fas fa-sync-alt"></i>
+        <span id="overlayText">切换语言...</span>
+    </div>
+</div>
 
 <!-- 固定顶栏，添加语言切换按钮 -->
 <div class="navbar">
@@ -483,19 +582,16 @@
     // 语言数据
     const langData = {
         zh: {
-            // 导航栏
             navBili: "B站",
             navQq: "加群",
             navMail: "邮箱",
             navDisk: "网盘",
             langBtn: "English",
-            // Gost
             gostSub: "救赎者·猎魔人",
             gostDesc: "“致敬《Dead Realm》—— 在方块世界中重塑追逐博弈的紧张与乐趣，将鬼抓人·救赎者·猎魔人化为史诗对抗。”",
             gostBtn: "访问 Gost 官网 →",
             gostBadge1: "双阵营对抗",
             gostBadge2: "神圣守护+猎魔人",
-            // Seasonal
             seasonSub: "鲜活四季",
             seasonDesc: "“春华·夏茂·秋实·冬藏 — 为世界注入生命的律动。” 树叶变色、作物季节限制、春季开花、冬季冻伤、钓鱼加成，为Minecraft注入鲜活的季节变换。",
             seasonBtn: "探索四季功能 →",
@@ -506,26 +602,22 @@
             seasonFeat3: "冬季冻伤系统",
             seasonFeat4: "春/夏钓鱼加成",
             seasonFeat5: "作物季节限制",
-            // ReloadConfig
             reloadSub: "智能配置迁移核心",
             reloadDesc: "自动检测服务器所有插件 config.yml 版本，备份旧配置并智能迁移数据。同名键自动继承，支持自定义映射，生成详细迁移报告。",
             reloadBtn: "查看 ReloadConfig 官网 →",
             reloadBadge1: "全自动备份",
             reloadBadge2: "版本迁移报告",
-            // 服务器
             serverTitle: "✨ 我的世界原版多人生存服务器 ✨",
             copyServerText: "复制地址",
-            // 资源栏
             resourceDiskText: "插件收集小仓：",
             resourceLink: "点击跳转",
             passwordLabel: "密码",
             copyPwdText: "复制密码",
-            // 社交
             socialBili: "B站",
             socialQq: "Q群 649213920",
             socialMail: "lztndxtn@qq.com",
-            // 页脚
-            footerText: "🐣 来自太空的小头脑 · 原创插件 | 让游戏更可爱一点~"
+            footerText: "🐣 来自太空的小头脑 · 原创插件 | 让游戏更可爱一点~",
+            overlayMsg: "切换语言..."
         },
         en: {
             navBili: "BiliBili",
@@ -562,69 +654,130 @@
             socialBili: "BiliBili",
             socialQq: "QQ Group 649213920",
             socialMail: "lztndxtn@qq.com",
-            footerText: "🐣 From Space Little Brain · Original Plugins | Making Minecraft cuter~"
+            footerText: "🐣 From Space Little Brain · Original Plugins | Making Minecraft cuter~",
+            overlayMsg: "Switching language..."
         }
     };
 
     let currentLang = 'zh';
+    let isSwitching = false;
 
-    function updateLanguage() {
-        const data = langData[currentLang];
-        // 导航栏
-        document.querySelector('.nav-bili').innerText = data.navBili;
-        document.querySelector('.nav-qq').innerText = data.navQq;
-        document.querySelector('.nav-mail').innerText = data.navMail;
-        document.querySelector('.nav-disk').innerText = data.navDisk;
-        document.getElementById('langToggle').innerText = data.langBtn;
-        // Gost
-        document.querySelector('#card-gost .gost-sub').innerText = data.gostSub;
-        document.getElementById('gost-desc').innerText = data.gostDesc;
-        document.getElementById('gost-btn').innerHTML = `<i class="fas fa-book-open"></i> ${data.gostBtn}`;
-        document.getElementById('gost-badge1').innerHTML = `<i class="fas fa-ghost"></i> ${data.gostBadge1}`;
-        document.getElementById('gost-badge2').innerHTML = `<i class="fas fa-shield-alt"></i> ${data.gostBadge2}`;
-        // Seasonal
-        document.querySelector('#card-season .season-sub').innerText = data.seasonSub;
-        document.getElementById('season-desc').innerText = data.seasonDesc;
-        document.getElementById('season-btn').innerHTML = `<i class="fas fa-tree"></i> ${data.seasonBtn}`;
-        document.getElementById('season-badge1').innerHTML = `<i class="fas fa-calendar-alt"></i> ${data.seasonBadge1}`;
-        document.getElementById('season-badge2').innerHTML = `<i class="fas fa-thermometer-low"></i> ${data.seasonBadge2}`;
-        const featSpans = document.querySelectorAll('#season-features .feature-tag span');
-        if (featSpans.length === 5) {
-            featSpans[0].innerText = data.seasonFeat1;
-            featSpans[1].innerText = data.seasonFeat2;
-            featSpans[2].innerText = data.seasonFeat3;
-            featSpans[3].innerText = data.seasonFeat4;
-            featSpans[4].innerText = data.seasonFeat5;
-        }
-        // ReloadConfig
-        document.querySelector('#card-reload .reload-sub').innerText = data.reloadSub;
-        document.getElementById('reload-desc').innerText = data.reloadDesc;
-        document.getElementById('reload-btn').innerHTML = `<i class="fas fa-cogs"></i> ${data.reloadBtn}`;
-        document.getElementById('reload-badge1').innerHTML = `<i class="fas fa-database"></i> ${data.reloadBadge1}`;
-        document.getElementById('reload-badge2').innerHTML = `<i class="fas fa-history"></i> ${data.reloadBadge2}`;
-        // 服务器卡片
-        document.getElementById('server-title').innerHTML = data.serverTitle;
-        document.getElementById('copy-server-text').innerText = data.copyServerText;
-        // 资源栏
-        document.getElementById('resource-disk-text').innerText = data.resourceDiskText;
-        document.getElementById('resource-link').innerText = data.resourceLink;
-        document.getElementById('password-label').innerText = data.passwordLabel;
-        document.getElementById('copy-pwd-text').innerText = data.copyPwdText;
-        // 社交链接文字
-        document.getElementById('social-bili').innerText = data.socialBili;
-        document.getElementById('social-qq').innerText = data.socialQq;
-        document.getElementById('social-mail').innerText = data.socialMail;
-        // 页脚
-        document.getElementById('footer-text').innerHTML = data.footerText;
+    // 显示居中弹窗（复制提示）
+    function showCenterToast(message, icon = "✅") {
+        // 移除已有的弹窗
+        const existing = document.querySelector('.center-toast');
+        if (existing) existing.remove();
+
+        const toast = document.createElement('div');
+        toast.className = 'center-toast';
+        toast.innerHTML = `<i class="fas ${icon === '✅' ? 'fa-check-circle' : 'fa-copy'}"></i> <span>${message}</span>`;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translate(-50%, -50%) scale(0.9)';
+            toast.style.transition = '0.2s';
+            setTimeout(() => toast.remove(), 200);
+        }, 2000);
     }
 
-    // 切换语言
+    // 复制核心函数（使用居中弹窗）
+    function copyToClipboard(text, label) {
+        if (!navigator.clipboard) {
+            fallbackCopy(text);
+            return;
+        }
+        navigator.clipboard.writeText(text).then(() => {
+            showCenterToast(`✓ ${label || '内容'} 已复制`, "✅");
+        }).catch(() => fallbackCopy(text));
+    }
+
+    function fallbackCopy(text) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showCenterToast(`✓ 复制成功`, "✅");
+    }
+
+    // 更新页面语言（带遮罩动画）
+    function updateLanguageWithOverlay() {
+        if (isSwitching) return;
+        isSwitching = true;
+        const overlay = document.getElementById('langOverlay');
+        const overlayTextSpan = document.querySelector('#overlayText');
+        overlayTextSpan.innerText = langData[currentLang === 'zh' ? 'en' : 'zh'].overlayMsg || "切换语言...";
+        overlay.classList.add('active');
+        // 短暂延迟后执行语言切换，让遮罩显现
+        setTimeout(() => {
+            // 执行语言更新
+            const data = langData[currentLang];
+            // 导航栏
+            document.querySelector('.nav-bili').innerText = data.navBili;
+            document.querySelector('.nav-qq').innerText = data.navQq;
+            document.querySelector('.nav-mail').innerText = data.navMail;
+            document.querySelector('.nav-disk').innerText = data.navDisk;
+            document.getElementById('langToggle').innerText = data.langBtn;
+            // Gost
+            document.querySelector('#card-gost .gost-sub').innerText = data.gostSub;
+            document.getElementById('gost-desc').innerText = data.gostDesc;
+            document.getElementById('gost-btn').innerHTML = `<i class="fas fa-book-open"></i> ${data.gostBtn}`;
+            document.getElementById('gost-badge1').innerHTML = `<i class="fas fa-ghost"></i> ${data.gostBadge1}`;
+            document.getElementById('gost-badge2').innerHTML = `<i class="fas fa-shield-alt"></i> ${data.gostBadge2}`;
+            // Seasonal
+            document.querySelector('#card-season .season-sub').innerText = data.seasonSub;
+            document.getElementById('season-desc').innerText = data.seasonDesc;
+            document.getElementById('season-btn').innerHTML = `<i class="fas fa-tree"></i> ${data.seasonBtn}`;
+            document.getElementById('season-badge1').innerHTML = `<i class="fas fa-calendar-alt"></i> ${data.seasonBadge1}`;
+            document.getElementById('season-badge2').innerHTML = `<i class="fas fa-thermometer-low"></i> ${data.seasonBadge2}`;
+            const featSpans = document.querySelectorAll('#season-features .feature-tag span');
+            if (featSpans.length === 5) {
+                featSpans[0].innerText = data.seasonFeat1;
+                featSpans[1].innerText = data.seasonFeat2;
+                featSpans[2].innerText = data.seasonFeat3;
+                featSpans[3].innerText = data.seasonFeat4;
+                featSpans[4].innerText = data.seasonFeat5;
+            }
+            // ReloadConfig
+            document.querySelector('#card-reload .reload-sub').innerText = data.reloadSub;
+            document.getElementById('reload-desc').innerText = data.reloadDesc;
+            document.getElementById('reload-btn').innerHTML = `<i class="fas fa-cogs"></i> ${data.reloadBtn}`;
+            document.getElementById('reload-badge1').innerHTML = `<i class="fas fa-database"></i> ${data.reloadBadge1}`;
+            document.getElementById('reload-badge2').innerHTML = `<i class="fas fa-history"></i> ${data.reloadBadge2}`;
+            // 服务器
+            document.getElementById('server-title').innerHTML = data.serverTitle;
+            document.getElementById('copy-server-text').innerText = data.copyServerText;
+            // 资源栏
+            document.getElementById('resource-disk-text').innerText = data.resourceDiskText;
+            document.getElementById('resource-link').innerText = data.resourceLink;
+            document.getElementById('password-label').innerText = data.passwordLabel;
+            document.getElementById('copy-pwd-text').innerText = data.copyPwdText;
+            // 社交
+            document.getElementById('social-bili').innerText = data.socialBili;
+            document.getElementById('social-qq').innerText = data.socialQq;
+            document.getElementById('social-mail').innerText = data.socialMail;
+            // 页脚
+            document.getElementById('footer-text').innerHTML = data.footerText;
+
+            // 延迟后淡出遮罩
+            setTimeout(() => {
+                overlay.classList.remove('active');
+                setTimeout(() => {
+                    isSwitching = false;
+                }, 250);
+            }, 180);
+        }, 80);
+    }
+
+    // 语言切换按钮事件
     document.getElementById('langToggle').addEventListener('click', () => {
+        if (isSwitching) return;
         currentLang = currentLang === 'zh' ? 'en' : 'zh';
-        updateLanguage();
+        updateLanguageWithOverlay();
     });
 
-    // 初始化头像检测（不变）
+    // 头像加载逻辑（不变）
     (function initAvatar() {
         const img = document.getElementById('userAvatar');
         const fallback = document.getElementById('fallbackIcon');
@@ -647,52 +800,49 @@
         }
     })();
 
-    // 复制功能（保持不变）
-    function copyToClipboard(text, label) {
-        if (!navigator.clipboard) {
-            fallbackCopy(text);
-            return;
-        }
-        navigator.clipboard.writeText(text).then(() => {
-            showToast(`✅ ${label || '内容'} 已复制: ${text}`);
-        }).catch(() => fallbackCopy(text));
-    }
-
-    function fallbackCopy(text) {
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-        showToast(`📋 复制成功: ${text}`);
-    }
-
-    function showToast(msg) {
-        let toast = document.createElement('div');
-        toast.innerText = msg;
-        toast.style.position = 'fixed';
-        toast.style.bottom = '25px';
-        toast.style.left = '50%';
-        toast.style.transform = 'translateX(-50%)';
-        toast.style.backgroundColor = '#ffeef4e6';
-        toast.style.backdropFilter = 'blur(16px)';
-        toast.style.color = '#b84d78';
-        toast.style.padding = '0.6rem 1.5rem';
-        toast.style.borderRadius = '3rem';
-        toast.style.fontSize = '0.85rem';
-        toast.style.fontWeight = '600';
-        toast.style.border = '1px solid #ff99bb';
-        toast.style.zIndex = '9999';
-        document.body.appendChild(toast);
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            setTimeout(() => toast.remove(), 280);
-        }, 2000);
-    }
-
     // 初始应用中文（默认）
-    updateLanguage();
+    // 为了初始无遮罩，直接调用一次更新函数（但跳过动画）
+    (function initialLang() {
+        const data = langData['zh'];
+        document.querySelector('.nav-bili').innerText = data.navBili;
+        document.querySelector('.nav-qq').innerText = data.navQq;
+        document.querySelector('.nav-mail').innerText = data.navMail;
+        document.querySelector('.nav-disk').innerText = data.navDisk;
+        document.getElementById('langToggle').innerText = data.langBtn;
+        document.querySelector('#card-gost .gost-sub').innerText = data.gostSub;
+        document.getElementById('gost-desc').innerText = data.gostDesc;
+        document.getElementById('gost-btn').innerHTML = `<i class="fas fa-book-open"></i> ${data.gostBtn}`;
+        document.getElementById('gost-badge1').innerHTML = `<i class="fas fa-ghost"></i> ${data.gostBadge1}`;
+        document.getElementById('gost-badge2').innerHTML = `<i class="fas fa-shield-alt"></i> ${data.gostBadge2}`;
+        document.querySelector('#card-season .season-sub').innerText = data.seasonSub;
+        document.getElementById('season-desc').innerText = data.seasonDesc;
+        document.getElementById('season-btn').innerHTML = `<i class="fas fa-tree"></i> ${data.seasonBtn}`;
+        document.getElementById('season-badge1').innerHTML = `<i class="fas fa-calendar-alt"></i> ${data.seasonBadge1}`;
+        document.getElementById('season-badge2').innerHTML = `<i class="fas fa-thermometer-low"></i> ${data.seasonBadge2}`;
+        const featSpans = document.querySelectorAll('#season-features .feature-tag span');
+        if (featSpans.length === 5) {
+            featSpans[0].innerText = data.seasonFeat1;
+            featSpans[1].innerText = data.seasonFeat2;
+            featSpans[2].innerText = data.seasonFeat3;
+            featSpans[3].innerText = data.seasonFeat4;
+            featSpans[4].innerText = data.seasonFeat5;
+        }
+        document.querySelector('#card-reload .reload-sub').innerText = data.reloadSub;
+        document.getElementById('reload-desc').innerText = data.reloadDesc;
+        document.getElementById('reload-btn').innerHTML = `<i class="fas fa-cogs"></i> ${data.reloadBtn}`;
+        document.getElementById('reload-badge1').innerHTML = `<i class="fas fa-database"></i> ${data.reloadBadge1}`;
+        document.getElementById('reload-badge2').innerHTML = `<i class="fas fa-history"></i> ${data.reloadBadge2}`;
+        document.getElementById('server-title').innerHTML = data.serverTitle;
+        document.getElementById('copy-server-text').innerText = data.copyServerText;
+        document.getElementById('resource-disk-text').innerText = data.resourceDiskText;
+        document.getElementById('resource-link').innerText = data.resourceLink;
+        document.getElementById('password-label').innerText = data.passwordLabel;
+        document.getElementById('copy-pwd-text').innerText = data.copyPwdText;
+        document.getElementById('social-bili').innerText = data.socialBili;
+        document.getElementById('social-qq').innerText = data.socialQq;
+        document.getElementById('social-mail').innerText = data.socialMail;
+        document.getElementById('footer-text').innerHTML = data.footerText;
+    })();
 </script>
 </body>
 </html>
