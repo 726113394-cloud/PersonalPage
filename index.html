@@ -6,7 +6,8 @@
     <title>来自太空的小头脑 | 原创Minecraft插件</title>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- 可爱风格字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,57 +16,63 @@
         }
 
         body {
-            background: #070b17;
-            font-family: 'Inter', sans-serif;
-            color: #f0f3fa;
+            background: #f9f5ff;
+            font-family: 'Quicksand', 'Inter', sans-serif;
+            color: #4a3b5c;
             line-height: 1.5;
         }
 
-        /* 活力渐变背景 */
-        .bg-energetic {
+        /* 可爱渐变背景：粉彩云朵 */
+        .bg-cute {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 10% 20%, #12182c, #020617);
+            background: linear-gradient(145deg, #ffe6f0 0%, #ffe0f5 30%, #e0f0ff 100%);
             z-index: -2;
         }
-        .bg-energetic::before {
+        .bg-cute::before {
             content: '';
             position: absolute;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 80% 70%, rgba(0, 255, 255, 0.08) 0%, transparent 60%),
-                        radial-gradient(circle at 20% 30%, rgba(255, 100, 0, 0.05) 0%, transparent 50%);
+            background: radial-gradient(circle at 20% 30%, rgba(255, 200, 220, 0.5) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(180, 220, 255, 0.4) 0%, transparent 60%);
             pointer-events: none;
         }
-        .bg-energetic::after {
+        /* 漂浮星星点点 */
+        .bg-cute::after {
             content: '';
             position: absolute;
             width: 200%;
             height: 200%;
-            background: repeating-linear-gradient(45deg, rgba(0,255,255,0.02) 0px, rgba(0,255,255,0.02) 2px, transparent 2px, transparent 8px);
-            animation: slowShift 20s linear infinite;
+            background-image: radial-gradient(2px 2px at 15% 40%, #ffb7c5, transparent),
+                              radial-gradient(3px 3px at 75% 25%, #b8e1ff, transparent),
+                              radial-gradient(1px 1px at 45% 85%, #ffe0a3, transparent);
+            background-repeat: no-repeat;
+            background-size: 200px 200px, 300px 300px, 250px 250px;
+            opacity: 0.5;
+            animation: floatStars 30s infinite alternate;
             pointer-events: none;
         }
-        @keyframes slowShift {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(-10%, -10%); }
+        @keyframes floatStars {
+            0% { transform: translate(0, 0); opacity: 0.4; }
+            100% { transform: translate(-3%, -2%); opacity: 0.8; }
         }
 
-        /* 固定顶栏 */
+        /* 固定顶栏 - 可爱半透明磨砂 */
         .navbar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(8, 12, 25, 0.75);
+            background: rgba(255, 245, 250, 0.85);
             backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(0, 230, 230, 0.4);
+            border-bottom: 2px solid #ffb7d2;
             z-index: 100;
             padding: 0.7rem 2rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(255, 140, 170, 0.1);
         }
         .nav-container {
             max-width: 1280px;
@@ -84,14 +91,14 @@
         .avatar-slot {
             width: 48px;
             height: 48px;
-            background: #0f172f;
-            border-radius: 16px;
+            background: #ffe2f0;
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            border: 2px solid #0ff;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+            border: 2px solid #ff99bb;
+            box-shadow: 0 0 12px rgba(255, 120, 160, 0.3);
         }
         .avatar-slot img {
             width: 100%;
@@ -99,43 +106,66 @@
             object-fit: cover;
         }
         .avatar-slot .no-avatar {
-            color: #0ff;
+            color: #ff99bb;
             font-size: 1.6rem;
         }
         .info-text h1 {
             font-size: 1.3rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff, #7df9ff);
+            font-weight: 700;
+            background: linear-gradient(135deg, #c45b8c, #f09bc0);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
-        /* 删除了个人简介段落 */
         .nav-links {
             display: flex;
             gap: 1.5rem;
             align-items: center;
         }
         .nav-links a {
-            color: #cfdfff;
+            color: #b35d82;
             text-decoration: none;
             font-size: 0.9rem;
-            font-weight: 500;
+            font-weight: 600;
             transition: 0.2s;
         }
         .nav-links a:hover {
-            color: #0ff;
-            text-shadow: 0 0 5px #0ff;
+            color: #ff80a5;
+            text-shadow: 0 0 5px #ffb3c6;
         }
         .btn-small {
-            background: rgba(0, 200, 255, 0.15);
+            background: #ffb7d2;
             padding: 0.3rem 1rem;
             border-radius: 2rem;
-            border: 1px solid #0ff;
+            border: 1px solid #ff7fa3;
             font-size: 0.8rem;
+            color: #8c3d5e;
+            font-weight: 700;
+            transition: 0.2s;
+            box-shadow: 0 2px 5px rgba(255,100,130,0.2);
         }
         .btn-small:hover {
-            background: #0ff22a20;
+            background: #ff9dbf;
+            color: #fff0f5;
+            border-color: #d95f86;
+            transform: scale(1.02);
+        }
+        /* 语言切换按钮独立样式 */
+        .lang-switch {
+            background: #ffe0ed;
+            border: 1px solid #ff99bb;
+            border-radius: 2rem;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            color: #b35d82;
+            transition: 0.2s;
+        }
+        .lang-switch:hover {
+            background: #ffccdf;
+            color: #8c3d5e;
+            transform: scale(1.02);
         }
 
         .container {
@@ -144,22 +174,22 @@
             padding: 6rem 1.5rem 3rem;
         }
 
-        /* 卡片样式 */
+        /* 可爱风格卡片 */
         .plugin-card {
-            background: rgba(12, 20, 35, 0.75);
+            background: rgba(255, 250, 252, 0.85);
             backdrop-filter: blur(8px);
-            border-radius: 1.8rem;
-            border: 1px solid rgba(0, 200, 255, 0.3);
+            border-radius: 2rem;
+            border: 1px solid #ffc0d4;
             padding: 1.6rem 2rem;
             margin-bottom: 2rem;
             transition: all 0.25s ease;
-            box-shadow: 0 10px 25px -12px rgba(0,0,0,0.4);
+            box-shadow: 0 15px 25px -12px rgba(255, 120, 150, 0.2);
         }
         .plugin-card:hover {
-            border-color: #ff8c42;
-            box-shadow: 0 18px 30px -12px rgba(255, 100, 30, 0.2);
-            transform: translateY(-3px);
-            background: rgba(15, 25, 45, 0.85);
+            border-color: #ffa5c2;
+            box-shadow: 0 20px 30px -12px #ffb7d080;
+            transform: translateY(-4px);
+            background: rgba(255, 248, 250, 0.95);
         }
         .card-header {
             display: flex;
@@ -170,26 +200,26 @@
         }
         .plugin-name {
             font-size: 1.9rem;
-            font-weight: 800;
-            background: linear-gradient(120deg, #f0f9ff, #aaf0ff);
+            font-weight: 700;
+            background: linear-gradient(120deg, #d96c9e, #f5a7c1);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: -0.3px;
+            letter-spacing: -0.2px;
         }
         .version {
             font-size: 0.75rem;
-            background: #0a1222;
+            background: #ffeef4;
             padding: 0.2rem 0.8rem;
             border-radius: 30px;
-            color: #7df9ff;
-            font-weight: 500;
+            color: #c96f98;
+            font-weight: 600;
         }
         .plugin-desc {
-            color: #e2edff;
+            color: #6e4c64;
             margin: 0.8rem 0 1rem;
             line-height: 1.5;
-            border-left: 3px solid #ff8c42;
+            border-left: 3px solid #ffb0ca;
             padding-left: 1rem;
             font-size: 0.95rem;
         }
@@ -197,36 +227,48 @@
             display: inline-flex;
             align-items: center;
             gap: 0.6rem;
-            background: rgba(0,255,255,0.05);
-            border: 1px solid #0ff;
+            background: #ffb7d2;
+            border: 1px solid #e86f98;
             border-radius: 2rem;
             padding: 0.45rem 1.3rem;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #caf0ff;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #6f2d4e;
             text-decoration: none;
             transition: 0.2s;
+            box-shadow: 0 2px 6px rgba(233, 87, 124, 0.2);
         }
         .btn-outline-light:hover {
-            background: #0ff22a20;
-            border-color: #ff8c42;
-            color: #fff;
-            box-shadow: 0 0 8px rgba(0,255,200,0.5);
+            background: #ff9dbf;
+            border-color: #c7547b;
+            color: #4b1d35;
+            box-shadow: 0 4px 12px rgba(255, 80, 120, 0.3);
+            transform: translateY(-2px);
         }
-        .badge-mini {
-            background: #0f1a2c;
+        .badge-mini, .feature-tag {
+            background: #ffeef4;
             border-radius: 30px;
             font-size: 0.7rem;
             padding: 0.25rem 0.9rem;
             display: inline-block;
-            color: #baf0ff;
-            border: 1px solid #2a4c6e;
+            color: #bf6990;
+            border: 1px solid #ffc0d4;
+        }
+        .feature-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .season-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin: 1rem 0 0.5rem;
         }
 
-        /* 服务器卡片 */
         .server-card {
-            background: linear-gradient(115deg, #0f1b2e, #091121);
-            border-radius: 1.5rem;
+            background: linear-gradient(115deg, #fff0f7, #ffeaf2);
+            border-radius: 1.8rem;
             padding: 1.2rem 1.8rem;
             margin: 2rem 0 1.8rem;
             display: flex;
@@ -234,35 +276,39 @@
             align-items: center;
             justify-content: space-between;
             gap: 1rem;
-            border: 1px solid #ff8c42;
-            box-shadow: 0 0 12px rgba(255, 140, 66, 0.2);
+            border: 1px solid #ffbcd2;
+            box-shadow: 0 8px 18px rgba(255, 150, 180, 0.15);
         }
         .server-ip {
             font-family: 'Monaco', 'Space Mono', monospace;
-            background: #020617;
+            background: #ffffffcc;
             padding: 0.4rem 1.2rem;
             border-radius: 3rem;
             font-size: 0.9rem;
             letter-spacing: 0.5px;
-            color: #ffbd7f;
+            color: #c4618b;
+            font-weight: 600;
         }
         .copy-btn {
-            background: none;
-            border: 1px solid #ff8c42;
+            background: #ffccdf;
+            border: 1px solid #e68faf;
             border-radius: 2rem;
             padding: 0.3rem 1rem;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
+            font-weight: 700;
             cursor: pointer;
             transition: 0.2s;
-            color: #ffbc7a;
+            color: #9e4b6e;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
         .copy-btn:hover {
-            background: #ff8c42;
-            color: #0a0c1a;
-            border-color: #ff8c42;
+            background: #ffb7d2;
+            color: #5c2a42;
+            border-color: #d45884;
+            transform: scale(1.02);
         }
         hr {
-            border-color: rgba(0, 200, 255, 0.2);
+            border-color: #ffc4da;
             margin: 1rem 0;
         }
         .social-links {
@@ -272,21 +318,22 @@
             align-items: center;
         }
         .social-links a {
-            color: #bcd0ff;
+            color: #b35d82;
             font-size: 0.9rem;
             text-decoration: none;
             transition: 0.2s;
+            font-weight: 500;
         }
         .social-links a:hover {
-            color: #0ff;
+            color: #ff86aa;
         }
 
         footer {
             text-align: center;
             margin-top: 2.5rem;
             font-size: 0.75rem;
-            color: #8595b5;
-            border-top: 1px solid rgba(0, 200, 255, 0.25);
+            color: #a87c94;
+            border-top: 1px solid #ffccdf;
             padding-top: 1.8rem;
         }
         @media (max-width: 680px) {
@@ -306,109 +353,278 @@
             }
         }
         .resource-bar {
-            background: rgba(0, 30, 40, 0.5);
-            border-radius: 1.5rem;
+            background: rgba(255, 240, 245, 0.8);
+            border-radius: 1.8rem;
             padding: 0.9rem 1.5rem;
             margin: 1rem 0;
-            border: 1px solid rgba(0, 255, 200, 0.3);
+            border: 1px solid #ffc0d4;
         }
         .glow-link {
-            color: #7df9ff;
-            font-weight: 500;
+            color: #db7093;
+            font-weight: 600;
         }
         i.fa, i.fab, i.far {
             margin-right: 4px;
         }
+        button, a {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-<div class="bg-energetic"></div>
+<div class="bg-cute"></div>
 
-<!-- 顶部固定栏：只有头像+名字，没有个人简介 -->
+<!-- 固定顶栏，添加语言切换按钮 -->
 <div class="navbar">
     <div class="nav-container">
         <div class="profile-area">
             <div class="avatar-slot" id="avatarSlot">
                 <img id="userAvatar" src="touxiang.png" alt="头像" style="display: none;" onerror="this.onerror=null; this.style.display='none'; document.getElementById('fallbackIcon').style.display='flex';">
-                <div id="fallbackIcon" class="no-avatar" style="display: none;"><i class="fas fa-user-astronaut"></i></div>
+                <div id="fallbackIcon" class="no-avatar" style="display: none;"><i class="fas fa-bunny"></i></div>
             </div>
             <div class="info-text">
                 <h1>来自太空的小头脑</h1>
-                <!-- 删除了任何子标题或简介 -->
             </div>
         </div>
         <div class="nav-links">
-            <a href="https://space.bilibili.com/3493116665400113" target="_blank"><i class="fab fa-bilibili"></i> B站</a>
-            <a href="#" onclick="copyToClipboard('649213920', 'QQ群号')"><i class="fab fa-qq"></i> 加群</a>
-            <a href="mailto:lztndxtn@qq.com"><i class="fas fa-envelope"></i> 邮箱</a>
-            <a href="https://wwatk.lanzouv.com/b00efzogsj" target="_blank" class="btn-small"><i class="fas fa-cloud-upload-alt"></i> 网盘</a>
+            <a href="https://space.bilibili.com/3493116665400113" target="_blank"><i class="fab fa-bilibili"></i> <span class="nav-bili">B站</span></a>
+            <a href="#" onclick="copyToClipboard('649213920', 'QQ群号')"><i class="fab fa-qq"></i> <span class="nav-qq">加群</span></a>
+            <a href="mailto:lztndxtn@qq.com"><i class="fas fa-envelope"></i> <span class="nav-mail">邮箱</span></a>
+            <a href="https://wwatk.lanzouv.com/b00efzogsj" target="_blank" class="btn-small"><i class="fas fa-cloud-upload-alt"></i> <span class="nav-disk">网盘</span></a>
+            <!-- 语言切换按钮 -->
+            <button id="langToggle" class="lang-switch">English</button>
         </div>
     </div>
 </div>
 
 <main class="container">
-    <!-- 没有个人简介段落，直接进入插件卡片 -->
-
     <!-- Gost 插件卡片 -->
-    <div class="plugin-card">
+    <div class="plugin-card" id="card-gost">
         <div class="card-header">
-            <span class="plugin-name">Gost · 鬼抓人 <span style="font-size: 0.9rem;">救赎者·猎魔人</span></span>
+            <span class="plugin-name">Gost · 鬼抓人 <span style="font-size: 0.9rem;" class="gost-sub">救赎者·猎魔人</span></span>
             <span class="version">v2.2.3</span>
         </div>
-        <div class="plugin-desc">
+        <div class="plugin-desc" id="gost-desc">
             “致敬《Dead Realm》—— 在方块世界中重塑追逐博弈的紧张与乐趣，将鬼抓人·救赎者·猎魔人化为史诗对抗。”
         </div>
         <div style="display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; margin-top: 0.8rem;">
-            <a href="https://726113394-cloud.github.io/Gost/" target="_blank" class="btn-outline-light"><i class="fas fa-book-open"></i> 访问 Gost 官网 →</a>
-            <span class="badge-mini"><i class="fas fa-ghost"></i> 双阵营对抗</span>
-            <span class="badge-mini"><i class="fas fa-shield-alt"></i> 神圣守护+猎魔人</span>
+            <a href="https://726113394-cloud.github.io/Gost/" target="_blank" class="btn-outline-light" id="gost-btn"><i class="fas fa-book-open"></i> 访问 Gost 官网 →</a>
+            <span class="badge-mini" id="gost-badge1"><i class="fas fa-ghost"></i> 双阵营对抗</span>
+            <span class="badge-mini" id="gost-badge2"><i class="fas fa-shield-alt"></i> 神圣守护+猎魔人</span>
+        </div>
+    </div>
+
+    <!-- SeasonalPlugin 四季插件卡片 -->
+    <div class="plugin-card" id="card-season">
+        <div class="card-header">
+            <span class="plugin-name">SeasonalPlugin · 四季插件 <span style="font-size: 0.9rem;" class="season-sub">鲜活四季</span></span>
+            <span class="version">for 1.21.x</span>
+        </div>
+        <div class="plugin-desc" id="season-desc">
+            “春华·夏茂·秋实·冬藏 — 为世界注入生命的律动。” 树叶变色、作物季节限制、春季开花、冬季冻伤、钓鱼加成，为Minecraft注入鲜活的季节变换。
+        </div>
+        <div class="season-features" id="season-features">
+            <span class="feature-tag"><i class="fas fa-leaf"></i> <span>树叶&草地变色</span></span>
+            <span class="feature-tag"><i class="fas fa-cloud-rain"></i> <span>四季更替·天气影响</span></span>
+            <span class="feature-tag"><i class="fas fa-snowflake"></i> <span>冬季冻伤系统</span></span>
+            <span class="feature-tag"><i class="fas fa-fish"></i> <span>春/夏钓鱼加成</span></span>
+            <span class="feature-tag"><i class="fas fa-seedling"></i> <span>作物季节限制</span></span>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; margin-top: 1rem;">
+            <a href="https://726113394-cloud.github.io/season/" target="_blank" class="btn-outline-light" id="season-btn"><i class="fas fa-tree"></i> 探索四季功能 →</a>
+            <span class="badge-mini" id="season-badge1"><i class="fas fa-calendar-alt"></i> 春→夏→秋→冬循环</span>
+            <span class="badge-mini" id="season-badge2"><i class="fas fa-thermometer-low"></i> 冻伤·生存挑战</span>
         </div>
     </div>
 
     <!-- ReloadConfig 插件卡片 -->
-    <div class="plugin-card">
+    <div class="plugin-card" id="card-reload">
         <div class="card-header">
-            <span class="plugin-name">ReloadConfig <span style="font-size: 0.9rem;">智能配置迁移核心</span></span>
+            <span class="plugin-name">ReloadConfig <span style="font-size: 0.9rem;" class="reload-sub">智能配置迁移核心</span></span>
             <span class="version">v1.0.0</span>
         </div>
-        <div class="plugin-desc">
+        <div class="plugin-desc" id="reload-desc">
             自动检测服务器所有插件 config.yml 版本，备份旧配置并智能迁移数据。同名键自动继承，支持自定义映射，生成详细迁移报告。
         </div>
         <div style="display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; margin-top: 0.8rem;">
-            <a href="https://726113394-cloud.github.io/ReloadConfig/" target="_blank" class="btn-outline-light"><i class="fas fa-cogs"></i> 查看 ReloadConfig 官网 →</a>
-            <span class="badge-mini"><i class="fas fa-database"></i> 全自动备份</span>
-            <span class="badge-mini"><i class="fas fa-history"></i> 版本迁移报告</span>
+            <a href="https://726113394-cloud.github.io/ReloadConfig/" target="_blank" class="btn-outline-light" id="reload-btn"><i class="fas fa-cogs"></i> 查看 ReloadConfig 官网 →</a>
+            <span class="badge-mini" id="reload-badge1"><i class="fas fa-database"></i> 全自动备份</span>
+            <span class="badge-mini" id="reload-badge2"><i class="fas fa-history"></i> 版本迁移报告</span>
         </div>
     </div>
 
     <!-- 生存服务器区块 -->
-    <div class="server-card">
-        <div><i class="fas fa-globe" style="color:#ff8c42; margin-right: 10px;"></i> <strong>✨ 我的世界原版多人生存服务器 ✨</strong></div>
+    <div class="server-card" id="server-card">
+        <div><i class="fas fa-tree" style="color:#ff99bb; margin-right: 10px;"></i> <strong id="server-title">✨ 我的世界原版多人生存服务器 ✨</strong></div>
         <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
             <span class="server-ip">mg5.i9idc.com:11081</span>
-            <span class="copy-btn" onclick="copyToClipboard('mg5.i9idc.com:11081', '服务器地址')"><i class="far fa-copy"></i> 复制地址</span>
+            <span class="copy-btn" id="copy-server-btn" onclick="copyToClipboard('mg5.i9idc.com:11081', '服务器地址')"><i class="far fa-copy"></i> <span id="copy-server-text">复制地址</span></span>
         </div>
     </div>
 
-    <!-- 资源及联系方式整合 -->
-    <div class="resource-bar">
+    <!-- 资源及联系方式 -->
+    <div class="resource-bar" id="resource-bar">
         <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.8rem;">
-            <div><i class="fas fa-download"></i> 插件收集小仓：<a href="https://wwatk.lanzouv.com/b00efzogsj" target="_blank" class="glow-link">点击跳转</a> <span style="background:#00000050; padding: 2px 10px; border-radius: 20px;">密码: 0123</span> <span class="copy-btn" onclick="copyToClipboard('0123', '网盘密码')">复制密码</span></div>
+            <div><i class="fas fa-download"></i> <span id="resource-disk-text">插件收集小仓：</span><a href="https://wwatk.lanzouv.com/b00efzogsj" target="_blank" class="glow-link" id="resource-link">点击跳转</a> <span style="background:#ffeef4; padding: 2px 10px; border-radius: 20px;"><span id="password-label">密码</span>: 0123</span> <span class="copy-btn" id="copy-pwd-btn" onclick="copyToClipboard('0123', '网盘密码')"><i class="far fa-copy"></i> <span id="copy-pwd-text">复制密码</span></span></div>
             <div class="social-links">
-                <a href="https://space.bilibili.com/3493116665400113" target="_blank"><i class="fab fa-bilibili"></i> B站</a>
-                <a href="#" onclick="copyToClipboard('649213920', 'QQ群号')"><i class="fab fa-qq"></i> Q群 649213920</a>
-                <a href="mailto:lztndxtn@qq.com"><i class="fas fa-envelope"></i> lztndxtn@qq.com</a>
+                <a href="https://space.bilibili.com/3493116665400113" target="_blank"><i class="fab fa-bilibili"></i> <span id="social-bili">B站</span></a>
+                <a href="#" onclick="copyToClipboard('649213920', 'QQ群号')"><i class="fab fa-qq"></i> <span id="social-qq">Q群 649213920</span></a>
+                <a href="mailto:lztndxtn@qq.com"><i class="fas fa-envelope"></i> <span id="social-mail">lztndxtn@qq.com</span></a>
             </div>
         </div>
     </div>
 
     <footer>
-        <p>© 来自太空的小头脑 · 原创Minecraft插件 | Gost · ReloadConfig 持续维护中</p>
+        <p id="footer-text">🐣 来自太空的小头脑 · 原创插件 | 让游戏更可爱一点~</p>
     </footer>
 </main>
 
 <script>
-    // 头像加载逻辑
+    // 语言数据
+    const langData = {
+        zh: {
+            // 导航栏
+            navBili: "B站",
+            navQq: "加群",
+            navMail: "邮箱",
+            navDisk: "网盘",
+            langBtn: "English",
+            // Gost
+            gostSub: "救赎者·猎魔人",
+            gostDesc: "“致敬《Dead Realm》—— 在方块世界中重塑追逐博弈的紧张与乐趣，将鬼抓人·救赎者·猎魔人化为史诗对抗。”",
+            gostBtn: "访问 Gost 官网 →",
+            gostBadge1: "双阵营对抗",
+            gostBadge2: "神圣守护+猎魔人",
+            // Seasonal
+            seasonSub: "鲜活四季",
+            seasonDesc: "“春华·夏茂·秋实·冬藏 — 为世界注入生命的律动。” 树叶变色、作物季节限制、春季开花、冬季冻伤、钓鱼加成，为Minecraft注入鲜活的季节变换。",
+            seasonBtn: "探索四季功能 →",
+            seasonBadge1: "春→夏→秋→冬循环",
+            seasonBadge2: "冻伤·生存挑战",
+            seasonFeat1: "树叶&草地变色",
+            seasonFeat2: "四季更替·天气影响",
+            seasonFeat3: "冬季冻伤系统",
+            seasonFeat4: "春/夏钓鱼加成",
+            seasonFeat5: "作物季节限制",
+            // ReloadConfig
+            reloadSub: "智能配置迁移核心",
+            reloadDesc: "自动检测服务器所有插件 config.yml 版本，备份旧配置并智能迁移数据。同名键自动继承，支持自定义映射，生成详细迁移报告。",
+            reloadBtn: "查看 ReloadConfig 官网 →",
+            reloadBadge1: "全自动备份",
+            reloadBadge2: "版本迁移报告",
+            // 服务器
+            serverTitle: "✨ 我的世界原版多人生存服务器 ✨",
+            copyServerText: "复制地址",
+            // 资源栏
+            resourceDiskText: "插件收集小仓：",
+            resourceLink: "点击跳转",
+            passwordLabel: "密码",
+            copyPwdText: "复制密码",
+            // 社交
+            socialBili: "B站",
+            socialQq: "Q群 649213920",
+            socialMail: "lztndxtn@qq.com",
+            // 页脚
+            footerText: "🐣 来自太空的小头脑 · 原创插件 | 让游戏更可爱一点~"
+        },
+        en: {
+            navBili: "BiliBili",
+            navQq: "Join QQ",
+            navMail: "Email",
+            navDisk: "Cloud",
+            langBtn: "中文",
+            gostSub: "Redeemer·Hunter",
+            gostDesc: "“Tribute to Dead Realm — Recreating the thrill of chase and strategy in Minecraft, turning Ghost Chase, Redeemer, and Demon Hunter into epic confrontations.”",
+            gostBtn: "Visit Gost Website →",
+            gostBadge1: "Two-Faction Combat",
+            gostBadge2: "Holy Protection + Demon Hunter",
+            seasonSub: "Vibrant Seasons",
+            seasonDesc: "“Spring Blossoms, Summer Growth, Autumn Harvest, Winter Storage — Infusing life rhythm into the world.” Leaf color changes, crop season restrictions, spring blooming, winter frostbite, fishing bonuses, bring dynamic seasons to Minecraft.",
+            seasonBtn: "Explore Seasons →",
+            seasonBadge1: "Spring→Summer→Autumn→Winter Cycle",
+            seasonBadge2: "Frostbite · Survival Challenge",
+            seasonFeat1: "Leaf & Grass Color Change",
+            seasonFeat2: "Seasonal Weather Effects",
+            seasonFeat3: "Winter Frostbite System",
+            seasonFeat4: "Spring/Summer Fishing Bonus",
+            seasonFeat5: "Crop Season Restriction",
+            reloadSub: "Smart Config Migration Core",
+            reloadDesc: "Automatically scan config.yml of all plugins, backup old configs and intelligently migrate data. Same-key auto inheritance, custom mapping rules, generate detailed migration logs.",
+            reloadBtn: "View ReloadConfig Website →",
+            reloadBadge1: "Auto Backup",
+            reloadBadge2: "Version Migration Report",
+            serverTitle: "✨ Vanilla Multiplayer Survival Server ✨",
+            copyServerText: "Copy Address",
+            resourceDiskText: "Plugin Collection: ",
+            resourceLink: "Click to visit",
+            passwordLabel: "Password",
+            copyPwdText: "Copy Password",
+            socialBili: "BiliBili",
+            socialQq: "QQ Group 649213920",
+            socialMail: "lztndxtn@qq.com",
+            footerText: "🐣 From Space Little Brain · Original Plugins | Making Minecraft cuter~"
+        }
+    };
+
+    let currentLang = 'zh';
+
+    function updateLanguage() {
+        const data = langData[currentLang];
+        // 导航栏
+        document.querySelector('.nav-bili').innerText = data.navBili;
+        document.querySelector('.nav-qq').innerText = data.navQq;
+        document.querySelector('.nav-mail').innerText = data.navMail;
+        document.querySelector('.nav-disk').innerText = data.navDisk;
+        document.getElementById('langToggle').innerText = data.langBtn;
+        // Gost
+        document.querySelector('#card-gost .gost-sub').innerText = data.gostSub;
+        document.getElementById('gost-desc').innerText = data.gostDesc;
+        document.getElementById('gost-btn').innerHTML = `<i class="fas fa-book-open"></i> ${data.gostBtn}`;
+        document.getElementById('gost-badge1').innerHTML = `<i class="fas fa-ghost"></i> ${data.gostBadge1}`;
+        document.getElementById('gost-badge2').innerHTML = `<i class="fas fa-shield-alt"></i> ${data.gostBadge2}`;
+        // Seasonal
+        document.querySelector('#card-season .season-sub').innerText = data.seasonSub;
+        document.getElementById('season-desc').innerText = data.seasonDesc;
+        document.getElementById('season-btn').innerHTML = `<i class="fas fa-tree"></i> ${data.seasonBtn}`;
+        document.getElementById('season-badge1').innerHTML = `<i class="fas fa-calendar-alt"></i> ${data.seasonBadge1}`;
+        document.getElementById('season-badge2').innerHTML = `<i class="fas fa-thermometer-low"></i> ${data.seasonBadge2}`;
+        const featSpans = document.querySelectorAll('#season-features .feature-tag span');
+        if (featSpans.length === 5) {
+            featSpans[0].innerText = data.seasonFeat1;
+            featSpans[1].innerText = data.seasonFeat2;
+            featSpans[2].innerText = data.seasonFeat3;
+            featSpans[3].innerText = data.seasonFeat4;
+            featSpans[4].innerText = data.seasonFeat5;
+        }
+        // ReloadConfig
+        document.querySelector('#card-reload .reload-sub').innerText = data.reloadSub;
+        document.getElementById('reload-desc').innerText = data.reloadDesc;
+        document.getElementById('reload-btn').innerHTML = `<i class="fas fa-cogs"></i> ${data.reloadBtn}`;
+        document.getElementById('reload-badge1').innerHTML = `<i class="fas fa-database"></i> ${data.reloadBadge1}`;
+        document.getElementById('reload-badge2').innerHTML = `<i class="fas fa-history"></i> ${data.reloadBadge2}`;
+        // 服务器卡片
+        document.getElementById('server-title').innerHTML = data.serverTitle;
+        document.getElementById('copy-server-text').innerText = data.copyServerText;
+        // 资源栏
+        document.getElementById('resource-disk-text').innerText = data.resourceDiskText;
+        document.getElementById('resource-link').innerText = data.resourceLink;
+        document.getElementById('password-label').innerText = data.passwordLabel;
+        document.getElementById('copy-pwd-text').innerText = data.copyPwdText;
+        // 社交链接文字
+        document.getElementById('social-bili').innerText = data.socialBili;
+        document.getElementById('social-qq').innerText = data.socialQq;
+        document.getElementById('social-mail').innerText = data.socialMail;
+        // 页脚
+        document.getElementById('footer-text').innerHTML = data.footerText;
+    }
+
+    // 切换语言
+    document.getElementById('langToggle').addEventListener('click', () => {
+        currentLang = currentLang === 'zh' ? 'en' : 'zh';
+        updateLanguage();
+    });
+
+    // 初始化头像检测（不变）
     (function initAvatar() {
         const img = document.getElementById('userAvatar');
         const fallback = document.getElementById('fallbackIcon');
@@ -431,6 +647,7 @@
         }
     })();
 
+    // 复制功能（保持不变）
     function copyToClipboard(text, label) {
         if (!navigator.clipboard) {
             fallbackCopy(text);
@@ -458,14 +675,14 @@
         toast.style.bottom = '25px';
         toast.style.left = '50%';
         toast.style.transform = 'translateX(-50%)';
-        toast.style.backgroundColor = '#1e293be6';
+        toast.style.backgroundColor = '#ffeef4e6';
         toast.style.backdropFilter = 'blur(16px)';
-        toast.style.color = '#f1f5f9';
+        toast.style.color = '#b84d78';
         toast.style.padding = '0.6rem 1.5rem';
         toast.style.borderRadius = '3rem';
         toast.style.fontSize = '0.85rem';
-        toast.style.fontWeight = '500';
-        toast.style.border = '1px solid #0ff';
+        toast.style.fontWeight = '600';
+        toast.style.border = '1px solid #ff99bb';
         toast.style.zIndex = '9999';
         document.body.appendChild(toast);
         setTimeout(() => {
@@ -473,6 +690,9 @@
             setTimeout(() => toast.remove(), 280);
         }, 2000);
     }
+
+    // 初始应用中文（默认）
+    updateLanguage();
 </script>
 </body>
 </html>
