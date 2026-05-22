@@ -259,7 +259,7 @@
             align-items: center;
             gap: 5px;
         }
-        .season-features {
+        .season-features, .geyser-features {
             display: flex;
             flex-wrap: wrap;
             gap: 0.6rem;
@@ -536,6 +536,30 @@
         </div>
     </div>
 
+    <!-- GeyserOptimizer 插件卡片 -->
+    <div class="plugin-card" id="card-geyser">
+        <div class="card-header">
+            <span class="plugin-name">GeyserOptimizer <span style="font-size: 0.9rem;" class="geyser-sub">实时监控·智能优化</span></span>
+            <span class="version">v1.0.0</span>
+        </div>
+        <div class="plugin-desc" id="geyser-desc">
+            为 Geyser 基岩版互通注入极致稳定性，同时深度优化 Java 版玩家连接质量。实时监控连接状态，自动重连，精准识别不同版本玩家，为互通服务器保驾护航。
+        </div>
+        <div class="geyser-features" id="geyser-features">
+            <span class="feature-tag"><i class="fas fa-chart-line"></i> <span>实时监控&自动重连</span></span>
+            <span class="feature-tag"><i class="fas fa-mobile-alt"></i> <span>基岩版玩家优化</span></span>
+            <span class="feature-tag"><i class="fas fa-tachometer-alt"></i> <span>Java版Ping监控</span></span>
+            <span class="feature-tag"><i class="fas fa-user-tag"></i> <span>精准玩家识别</span></span>
+            <span class="feature-tag"><i class="fas fa-sliders-h"></i> <span>全配置化管理</span></span>
+            <span class="feature-tag"><i class="fas fa-bell"></i> <span>管理员即时通知</span></span>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; margin-top: 1rem;">
+            <a href="https://726113394-cloud.github.io/GeyserOptimizer/" target="_blank" class="btn-outline-light" id="geyser-btn"><i class="fas fa-plug"></i> 查看 GeyserOptimizer →</a>
+            <span class="badge-mini" id="geyser-badge1"><i class="fas fa-globe"></i> 跨版本兼容</span>
+            <span class="badge-mini" id="geyser-badge2"><i class="fas fa-chart-simple"></i> 被动优化</span>
+        </div>
+    </div>
+
     <!-- ReloadConfig 插件卡片 -->
     <div class="plugin-card" id="card-reload">
         <div class="card-header">
@@ -602,6 +626,17 @@
             seasonFeat3: "冬季冻伤系统",
             seasonFeat4: "春/夏钓鱼加成",
             seasonFeat5: "作物季节限制",
+            geyserSub: "实时监控·智能优化",
+            geyserDesc: "为 Geyser 基岩版互通注入极致稳定性，同时深度优化 Java 版玩家连接质量。实时监控连接状态，自动重连，精准识别不同版本玩家，为互通服务器保驾护航。",
+            geyserBtn: "查看 GeyserOptimizer →",
+            geyserBadge1: "跨版本兼容",
+            geyserBadge2: "被动优化",
+            geyserFeat1: "实时监控&自动重连",
+            geyserFeat2: "基岩版玩家优化",
+            geyserFeat3: "Java版Ping监控",
+            geyserFeat4: "精准玩家识别",
+            geyserFeat5: "全配置化管理",
+            geyserFeat6: "管理员即时通知",
             reloadSub: "智能配置迁移核心",
             reloadDesc: "自动检测服务器所有插件 config.yml 版本，备份旧配置并智能迁移数据。同名键自动继承，支持自定义映射，生成详细迁移报告。",
             reloadBtn: "查看 ReloadConfig 官网 →",
@@ -640,6 +675,17 @@
             seasonFeat3: "Winter Frostbite System",
             seasonFeat4: "Spring/Summer Fishing Bonus",
             seasonFeat5: "Crop Season Restriction",
+            geyserSub: "Real-time Monitoring·Smart Optimization",
+            geyserDesc: "Injects ultimate stability into Geyser Bedrock edition connectivity, while deeply optimizing Java edition player connection quality. Real-time connection monitoring, auto-reconnect, precise cross-platform player identification, safeguarding your hybrid server.",
+            geyserBtn: "View GeyserOptimizer →",
+            geyserBadge1: "Cross-version Compatible",
+            geyserBadge2: "Passive Optimization",
+            geyserFeat1: "Real-time Monitoring & Auto-reconnect",
+            geyserFeat2: "Bedrock Player Optimization",
+            geyserFeat3: "Java Edition Ping Monitoring",
+            geyserFeat4: "Precise Player Identification",
+            geyserFeat5: "Full Configuration Management",
+            geyserFeat6: "Admin Instant Notifications",
             reloadSub: "Smart Config Migration Core",
             reloadDesc: "Automatically scan config.yml of all plugins, backup old configs and intelligently migrate data. Same-key auto inheritance, custom mapping rules, generate detailed migration logs.",
             reloadBtn: "View ReloadConfig Website →",
@@ -739,6 +785,21 @@
                 featSpans[3].innerText = data.seasonFeat4;
                 featSpans[4].innerText = data.seasonFeat5;
             }
+            // GeyserOptimizer
+            document.querySelector('#card-geyser .geyser-sub').innerText = data.geyserSub;
+            document.getElementById('geyser-desc').innerText = data.geyserDesc;
+            document.getElementById('geyser-btn').innerHTML = `<i class="fas fa-plug"></i> ${data.geyserBtn}`;
+            document.getElementById('geyser-badge1').innerHTML = `<i class="fas fa-globe"></i> ${data.geyserBadge1}`;
+            document.getElementById('geyser-badge2').innerHTML = `<i class="fas fa-chart-simple"></i> ${data.geyserBadge2}`;
+            const geyserFeatSpans = document.querySelectorAll('#geyser-features .feature-tag span');
+            if (geyserFeatSpans.length === 6) {
+                geyserFeatSpans[0].innerText = data.geyserFeat1;
+                geyserFeatSpans[1].innerText = data.geyserFeat2;
+                geyserFeatSpans[2].innerText = data.geyserFeat3;
+                geyserFeatSpans[3].innerText = data.geyserFeat4;
+                geyserFeatSpans[4].innerText = data.geyserFeat5;
+                geyserFeatSpans[5].innerText = data.geyserFeat6;
+            }
             // ReloadConfig
             document.querySelector('#card-reload .reload-sub').innerText = data.reloadSub;
             document.getElementById('reload-desc').innerText = data.reloadDesc;
@@ -801,7 +862,6 @@
     })();
 
     // 初始应用中文（默认）
-    // 为了初始无遮罩，直接调用一次更新函数（但跳过动画）
     (function initialLang() {
         const data = langData['zh'];
         document.querySelector('.nav-bili').innerText = data.navBili;
@@ -826,6 +886,21 @@
             featSpans[2].innerText = data.seasonFeat3;
             featSpans[3].innerText = data.seasonFeat4;
             featSpans[4].innerText = data.seasonFeat5;
+        }
+        // GeyserOptimizer 初始化
+        document.querySelector('#card-geyser .geyser-sub').innerText = data.geyserSub;
+        document.getElementById('geyser-desc').innerText = data.geyserDesc;
+        document.getElementById('geyser-btn').innerHTML = `<i class="fas fa-plug"></i> ${data.geyserBtn}`;
+        document.getElementById('geyser-badge1').innerHTML = `<i class="fas fa-globe"></i> ${data.geyserBadge1}`;
+        document.getElementById('geyser-badge2').innerHTML = `<i class="fas fa-chart-simple"></i> ${data.geyserBadge2}`;
+        const geyserFeatSpans = document.querySelectorAll('#geyser-features .feature-tag span');
+        if (geyserFeatSpans.length === 6) {
+            geyserFeatSpans[0].innerText = data.geyserFeat1;
+            geyserFeatSpans[1].innerText = data.geyserFeat2;
+            geyserFeatSpans[2].innerText = data.geyserFeat3;
+            geyserFeatSpans[3].innerText = data.geyserFeat4;
+            geyserFeatSpans[4].innerText = data.geyserFeat5;
+            geyserFeatSpans[5].innerText = data.geyserFeat6;
         }
         document.querySelector('#card-reload .reload-sub').innerText = data.reloadSub;
         document.getElementById('reload-desc').innerText = data.reloadDesc;
